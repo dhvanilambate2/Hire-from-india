@@ -1,77 +1,66 @@
-@extends('layouts.guest')
+{{-- resources/views/auth/login.blade.php --}}
 
-@section('content')
+@extends('layouts.app')
 
-    <!-- Session Status -->
-    @if (session('status'))
-        <div class="alert alert-success mb-3">
-            {{ session('status') }}
-        </div>
-    @endif
+@section('title', 'Login')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email -->
-        <div class="mb-3">
-            <label for="email" class="form-label">{{ __('Email') }}</label>
-            <input
-                id="email"
-                type="email"
-                name="email"
-                class="form-control @error('email') is-invalid @enderror"
-                value="{{ old('email') }}"
-                required
-                autofocus
-                autocomplete="username"
-            >
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+@section('body')
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <i class="fas fa-bolt fa-2x" style="color: #4f46e5;"></i>
+            <h2 class="mt-2">Welcome Back</h2>
+            <p class="text-muted">Sign in to your account</p>
         </div>
 
-        <!-- Password -->
-        <div class="mb-3">
-            <label for="password" class="form-label">{{ __('Password') }}</label>
-            <input
-                id="password"
-                type="password"
-                name="password"
-                class="form-control @error('password') is-invalid @enderror"
-                required
-                autocomplete="current-password"
-            >
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+            </div>
+        @endif
 
-        <!-- Remember Me -->
-        <div class="mb-3 form-check">
-            <input
-                id="remember_me"
-                type="checkbox"
-                class="form-check-input"
-                name="remember"
-                {{ old('remember') ? 'checked' : '' }}
-            >
-            <label class="form-check-label" for="remember_me">
-                {{ __('Remember me') }}
-            </label>
-        </div>
+        <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
 
-        <!-- Actions -->
-        <div class="d-flex justify-content-between align-items-center">
-            @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-decoration-none">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email Address</label>
+                <input type="email"
+                       name="email"
+                       class="form-control @error('email') is-invalid @enderror"
+                       value="{{ old('email') }}"
+                       placeholder="you@example.com"
+                       required autofocus>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <button type="submit" class="btn btn-primary">
-                {{ __('Log in') }}
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Password</label>
+                <input type="password"
+                       name="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       placeholder="••••••••"
+                       required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">
+                <i class="fas fa-sign-in-alt me-2"></i> Sign In
             </button>
-        </div>
-    </form>
+        </form>
 
+        <p class="text-center text-muted mb-0">
+            Don't have an account?
+            <a href="{{ route('register') }}" style="color: #4f46e5; font-weight: 600;">Register here</a>
+        </p>
+    </div>
+</div>
 @endsection

@@ -6,63 +6,66 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Profile;
-use App\Models\Company;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    const ROLE_ADMIN = 'admin';
+    const ROLE_FREELANCER = 'freelancer';
+    const ROLE_EMPLOYER = 'employer';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-        'country',
-        'role',
+        'phone',
+        'bio',
+        'is_active',
     ];
 
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    public function company()
-    {
-        return $this->hasOne(Company::class);
-    }
-
-    public function freelancerProfile()
-    {
-        return $this->hasOne(FreelancerProfile::class);
-    }
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isFreelancer(): bool
+    {
+        return $this->role === self::ROLE_FREELANCER;
+    }
+
+    public function isEmployer(): bool
+    {
+        return $this->role === self::ROLE_EMPLOYER;
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', self::ROLE_ADMIN);
+    }
+
+    public function scopeFreelancers($query)
+    {
+        return $query->where('role', self::ROLE_FREELANCER);
+    }
+
+    public function scopeEmployers($query)
+    {
+        return $query->where('role', self::ROLE_EMPLOYER);
     }
 }

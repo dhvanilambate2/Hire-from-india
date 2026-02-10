@@ -1,79 +1,108 @@
-@extends('layouts.guest')
+{{-- resources/views/auth/register.blade.php --}}
 
-@section('content')
-<form method="POST" action="{{ route('register') }}">
-    @csrf
+@extends('layouts.app')
 
-    <!-- Name -->
-    <div class="mb-3">
-        <label for="name" class="form-label">{{ __('Name') }}</label>
-        <input id="name" type="text"
-               class="form-control @error('name') is-invalid @enderror"
-               name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
-        @error('name')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
+@section('title', 'Register')
+
+@section('body')
+<div class="auth-wrapper">
+    <div class="auth-card" style="max-width: 520px;">
+        <div class="text-center mb-4">
+            <i class="fas fa-bolt fa-2x" style="color: #4f46e5;"></i>
+            <h2 class="mt-2">Create Account</h2>
+            <p class="text-muted">Join as a Freelancer or Employer</p>
+        </div>
+
+        <form method="POST" action="{{ route('register.submit') }}">
+            @csrf
+
+            {{-- Role Selection --}}
+            <div class="mb-3 role-selector">
+                <label class="form-label fw-semibold">I want to join as</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="role"
+                           id="freelancer" value="freelancer"
+                           {{ old('role', 'freelancer') == 'freelancer' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="freelancer">
+                        <i class="fas fa-laptop-code me-2"></i>
+                        <strong>Freelancer</strong>
+                        <small class="d-block text-muted">I want to find work</small>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="role"
+                           id="employer" value="employer"
+                           {{ old('role') == 'employer' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="employer">
+                        <i class="fas fa-building me-2"></i>
+                        <strong>Employer</strong>
+                        <small class="d-block text-muted">I want to hire talent</small>
+                    </label>
+                </div>
+                @error('role')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Full Name</label>
+                <input type="text" name="name"
+                       class="form-control @error('name') is-invalid @enderror"
+                       value="{{ old('name') }}"
+                       placeholder="John Doe" required>
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email Address</label>
+                <input type="email" name="email"
+                       class="form-control @error('email') is-invalid @enderror"
+                       value="{{ old('email') }}"
+                       placeholder="you@example.com" required>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Phone <small class="text-muted">(optional)</small></label>
+                <input type="text" name="phone"
+                       class="form-control @error('phone') is-invalid @enderror"
+                       value="{{ old('phone') }}"
+                       placeholder="+1 234 567 890">
+                @error('phone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Password</label>
+                <input type="password" name="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       placeholder="Min. 8 characters" required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Confirm Password</label>
+                <input type="password" name="password_confirmation"
+                       class="form-control"
+                       placeholder="Repeat password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">
+                <i class="fas fa-user-plus me-2"></i> Create Account
+            </button>
+        </form>
+
+        <p class="text-center text-muted mb-0">
+            Already have an account?
+            <a href="{{ route('login') }}" style="color: #4f46e5; font-weight: 600;">Sign in</a>
+        </p>
     </div>
-
-    <!-- Email -->
-    <div class="mb-3">
-        <label for="email" class="form-label">{{ __('Email') }}</label>
-        <input id="email" type="email"
-               class="form-control @error('email') is-invalid @enderror"
-               name="email" value="{{ old('email') }}" required autocomplete="username">
-        @error('email')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <!-- Role -->
-    <div class="mb-3">
-        <label for="role" class="form-label">{{ __('Register As') }}</label>
-        <select id="role" name="role"
-                class="form-select @error('role') is-invalid @enderror">
-            <option value="">Select role</option>
-            <option value="freelancer" {{ old('role') == 'freelancer' ? 'selected' : '' }}>
-                Freelancer
-            </option>
-            <option value="employer" {{ old('role') == 'employer' ? 'selected' : '' }}>
-                Employer
-            </option>
-        </select>
-        @error('role')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <!-- Password -->
-    <div class="mb-3">
-        <label for="password" class="form-label">{{ __('Password') }}</label>
-        <input id="password" type="password"
-               class="form-control @error('password') is-invalid @enderror"
-               name="password" required autocomplete="new-password">
-        @error('password')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <!-- Confirm Password -->
-    <div class="mb-4">
-        <label for="password_confirmation" class="form-label">
-            {{ __('Confirm Password') }}
-        </label>
-        <input id="password_confirmation" type="password"
-               class="form-control"
-               name="password_confirmation" required autocomplete="new-password">
-    </div>
-
-    <!-- Actions -->
-    <div class="d-flex justify-content-between align-items-center">
-        <a href="{{ route('login') }}" class="text-decoration-none">
-            {{ __('Already registered?') }}
-        </a>
-
-        <button type="submit" class="btn btn-primary">
-            {{ __('Register') }}
-        </button>
-    </div>
-</form>
+</div>
 @endsection
