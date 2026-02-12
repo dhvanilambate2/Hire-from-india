@@ -1,5 +1,3 @@
-{{-- resources/views/layouts/admin.blade.php --}}
-
 @extends('layouts.app')
 
 @section('body')
@@ -40,7 +38,7 @@
             <li class="menu-header">Admin Management</li>
             <li>
                 <a href="{{ route('admin.admins.index') }}"
-                   class="{{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
+                   class="{{ request()->routeIs('admin.admins.index') ? 'active' : '' }}">
                     <i class="fas fa-user-shield"></i> All Admins
                 </a>
             </li>
@@ -48,6 +46,14 @@
                 <a href="{{ route('admin.admins.create') }}"
                    class="{{ request()->routeIs('admin.admins.create') ? 'active' : '' }}">
                     <i class="fas fa-user-plus"></i> Create Admin
+                </a>
+            </li>
+
+            <li class="menu-header">Account</li>
+            <li>
+                <a href="{{ route('profile.edit') }}"
+                   class="{{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                    <i class="fas fa-user-edit"></i> Edit Profile
                 </a>
             </li>
         </ul>
@@ -58,7 +64,8 @@
         {{-- Top Navbar --}}
         <div class="top-navbar">
             <div>
-                <button class="btn btn-sm btn-outline-secondary d-md-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
+                <button class="btn btn-sm btn-outline-secondary d-md-none"
+                        onclick="document.getElementById('sidebar').classList.toggle('show')">
                     <i class="fas fa-bars"></i>
                 </button>
                 <span class="fw-bold ms-2">@yield('page-title', 'Dashboard')</span>
@@ -69,6 +76,12 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><span class="dropdown-item-text text-muted small">{{ auth()->user()->email }}</span></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                            <i class="fas fa-user-edit me-2"></i> Edit Profile
+                        </a>
+                    </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
@@ -84,14 +97,12 @@
 
         {{-- Content --}}
         <div class="content-area">
-            {{-- Flash Messages --}}
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-
             @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
