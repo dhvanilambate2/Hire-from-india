@@ -103,4 +103,22 @@ class JobPost extends Model
     {
         return $this->applications()->where('freelancer_id', $freelancerId)->exists();
     }
+
+    public function company()
+    {
+        return $this->hasOneThrough(
+            Company::class,
+            User::class,
+            'id',           // users.id
+            'employer_id',  // companies.employer_id
+            'employer_id',  // job_posts.employer_id
+            'id'            // users.id
+        );
+    }
+
+    // Helper to get company info
+    public function getCompanyInfoAttribute()
+    {
+        return $this->employer->company ?? null;
+    }
 }

@@ -37,9 +37,17 @@
                     @if(auth()->user()->isEmployer())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('employer.dashboard') ? 'active fw-bold' : '' }}"
-                            href="{{ route('employer.dashboard') }}">
+                                href="{{ route('employer.dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('employer.company.index') }}" class="nav-link {{ request()->routeIs('employer.company.*') ? 'active' : '' }}">
+                            <i class="fas fa-building"></i> Company Profile
+                            @if(!auth()->user()->hasCompany())
+                                <span class="badge bg-warning ms-auto" style="font-size: 10px;">Setup</span>
+                            @endif
+                        </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('employer.jobs.*') ? 'active fw-bold' : '' }}"
@@ -47,18 +55,7 @@
                                 <i class="fas fa-briefcase me-1"></i> My Jobs
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employer.jobs.create') }}">
-                                <i class="fas fa-plus me-1"></i> Post Job
-                            </a>
-                        </li>
                     @endif
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active fw-bold' : '' }}"
-                           href="{{ route('profile.edit') }}">
-                            <i class="fas fa-user-edit me-1"></i> Edit Profile
-                        </a>
-                    </li>
                 </ul>
 
                 <div class="dropdown">
