@@ -16,16 +16,40 @@
                     @if(auth()->user()->isFreelancer())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('freelancer.dashboard') ? 'active fw-bold' : '' }}"
-                               href="{{ route('freelancer.dashboard') }}">
+                            href="{{ route('freelancer.dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.jobs.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.jobs.index') }}">
+                                <i class="fas fa-search me-1"></i> Browse Jobs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.applications.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.applications.index') }}">
+                                <i class="fas fa-file-alt me-1"></i> My Applications
+                            </a>
+                        </li>
                     @endif
+
                     @if(auth()->user()->isEmployer())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('employer.dashboard') ? 'active fw-bold' : '' }}"
-                               href="{{ route('employer.dashboard') }}">
+                            href="{{ route('employer.dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('employer.jobs.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('employer.jobs.index') }}">
+                                <i class="fas fa-briefcase me-1"></i> My Jobs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employer.jobs.create') }}">
+                                <i class="fas fa-plus me-1"></i> Post Job
                             </a>
                         </li>
                     @endif

@@ -15,6 +15,14 @@
                 </a>
             </li>
 
+            <li class="menu-header">Job Management</li>
+            <li>
+                <a href="{{ route('admin.jobs.index') }}"
+                class="{{ request()->routeIs('admin.jobs.*') ? 'active' : '' }}">
+                    <i class="fas fa-briefcase"></i> All Job Posts
+                </a>
+            </li>
+            
             <li class="menu-header">User Management</li>
             <li>
                 <a href="{{ route('admin.users.all') }}"
