@@ -20,6 +20,53 @@
         <div class="col-lg-8">
             <div class="data-table">
                 <div class="p-4">
+                    {{-- ========================================== --}}
+                    {{-- ✅ ADD COMPANY INFO HERE (Top of job card) --}}
+                    {{-- ========================================== --}}
+                    @php
+                        $company = $job->employer->company;
+                    @endphp
+
+                    <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom: 1px solid #f1f5f9;">
+                        @if($company && $company->has_logo)
+                            <img src="{{ $company->logo_url }}"
+                                 alt="{{ $company->company_name }}"
+                                 style="width: 56px; height: 56px; border-radius: 12px; object-fit: cover; border: 2px solid #e2e8f0;">
+                        @else
+                            <div style="width: 56px; height: 56px; border-radius: 12px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 24px;">
+                                <i class="fas fa-building"></i>
+                            </div>
+                        @endif
+                        <div>
+                            <h6 class="mb-0 fw-bold">
+                                {{ $company->company_name ?? 'Company Not Added' }}
+                            </h6>
+                            <div class="d-flex flex-wrap gap-2 mt-1">
+                                @if($company && $company->company_address)
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ $company->company_address }}
+                                    </small>
+                                @endif
+                                @if($company && $company->company_email)
+                                    <small class="text-muted">
+                                        <i class="fas fa-envelope me-1"></i>{{ $company->company_email }}
+                                    </small>
+                                @endif
+                                @if($company && $company->company_phone)
+                                    <small class="text-muted">
+                                        <i class="fas fa-phone me-1"></i>{{ $company->company_phone }}
+                                    </small>
+                                @endif
+                            </div>
+                            @if(!$company)
+                                <small class="text-muted fst-italic">Company details not available</small>
+                            @endif
+                        </div>
+                    </div>
+                    {{-- ========================================== --}}
+                    {{-- END COMPANY INFO                           --}}
+                    {{-- ========================================== --}}
+
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
                             <h3 class="fw-bold mb-2">{{ $job->title }}</h3>
@@ -81,6 +128,62 @@
         </div>
 
         <div class="col-lg-4">
+            {{-- ========================================== --}}
+            {{-- ✅ COMPANY CARD IN SIDEBAR (Above Employer) --}}
+            {{-- ========================================== --}}
+            @if($company)
+                <div class="data-table mb-4">
+                    <div class="p-3 border-bottom">
+                        <h6 class="fw-bold mb-0"><i class="fas fa-building me-2"></i> Company</h6>
+                    </div>
+                    <div class="p-3">
+                        <div class="text-center mb-3">
+                            @if($company->has_logo)
+                                <img src="{{ $company->logo_url }}"
+                                     alt="{{ $company->company_name }}"
+                                     style="width: 80px; height: 80px; border-radius: 14px; object-fit: cover; border: 2px solid #e2e8f0;">
+                            @else
+                                <div style="width: 80px; height: 80px; border-radius: 14px; background: #f1f5f9; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 32px;">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                            @endif
+                            <h6 class="fw-bold mt-2 mb-0">{{ $company->company_name }}</h6>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            @if($company->company_email)
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:32px;height:32px;border-radius:8px;background:#eef2ff;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-envelope" style="color:#6366f1;font-size:13px;"></i>
+                                    </div>
+                                    <small class="text-muted">{{ $company->company_email }}</small>
+                                </div>
+                            @endif
+
+                            @if($company->company_phone)
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:32px;height:32px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-phone" style="color:#16a34a;font-size:13px;"></i>
+                                    </div>
+                                    <small class="text-muted">{{ $company->company_phone }}</small>
+                                </div>
+                            @endif
+
+                            @if($company->company_address)
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:32px;height:32px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-map-marker-alt" style="color:#d97706;font-size:13px;"></i>
+                                    </div>
+                                    <small class="text-muted">{{ $company->company_address }}</small>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+            {{-- ========================================== --}}
+            {{-- END COMPANY SIDEBAR CARD                   --}}
+            {{-- ========================================== --}}
             <div class="data-table mb-4">
                 <div class="p-3 border-bottom"><h6 class="fw-bold mb-0">Employer</h6></div>
                 <div class="p-3">

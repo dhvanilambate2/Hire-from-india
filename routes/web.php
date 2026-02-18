@@ -15,6 +15,7 @@ use App\Http\Controllers\Freelancer\DashboardController as FreelancerDashboardCo
 use App\Http\Controllers\Freelancer\JobController as FreelancerJobController;
 use App\Http\Controllers\Employer\DashboardController as EmployerDashboardController;
 use App\Http\Controllers\Employer\JobController as EmployerJobController;
+use App\Http\Controllers\Employer\CompanyController;
 
 // ── Public ──
 Route::get('/', fn() => redirect()->route('login'));
@@ -72,6 +73,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 // ── Employer ──
 Route::middleware(['auth', 'verified', 'role:employer'])->prefix('employer')->name('employer.')->group(function () {
     Route::get('/dashboard', [EmployerDashboardController::class, 'index'])->name('dashboard');
+
+    // ── Company Profile ──
+    Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
+    Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
+    Route::put('/company', [CompanyController::class, 'update'])->name('company.update');
+    Route::post('/company/upload-logo', [CompanyController::class, 'uploadLogo'])->name('company.upload-logo');
+    Route::delete('/company/remove-logo', [CompanyController::class, 'removeLogo'])->name('company.remove-logo');
 
     Route::get('/jobs', [EmployerJobController::class, 'index'])->name('jobs.index');
     Route::get('/jobs/create', [EmployerJobController::class, 'create'])->name('jobs.create');
