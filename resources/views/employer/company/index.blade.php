@@ -2,7 +2,6 @@
 @section('title', $company ? 'Edit Company Profile' : 'Create Company Profile')
 
 @push('styles')
-<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" />
 <style>
     .company-card {
         background: #fff;
@@ -42,14 +41,14 @@
         margin-bottom: 6px;
         font-size: 14px;
     }
-    .form-control-custom {
+    .form-control-custom, .form-select-custom {
         border: 1.5px solid #e2e8f0;
         border-radius: 10px;
         padding: 10px 16px;
         font-size: 14px;
         transition: all 0.2s;
     }
-    .form-control-custom:focus {
+    .form-control-custom:focus, .form-select-custom:focus {
         border-color: #6366f1;
         box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
     }
@@ -123,12 +122,6 @@
         font-style: italic;
         font-size: 13px;
     }
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 24px;
-    }
     .info-badge {
         display: inline-flex;
         align-items: center;
@@ -145,6 +138,17 @@
     .info-badge-complete {
         background: #dcfce7;
         color: #16a34a;
+    }
+    .section-divider {
+        padding: 12px 0;
+        margin: 8px 0;
+        border-top: 1px solid #f1f5f9;
+    }
+    .section-divider-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 0;
     }
 </style>
 @endpush
@@ -169,6 +173,20 @@
     </a>
 </div>
 
+{{-- Flash Messages --}}
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px;">
+        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 12px;">
+        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
 <div class="company-card">
     {{-- Company Header Preview --}}
     @if($company)
@@ -182,13 +200,19 @@
             @endif
             <div>
                 <h5 class="fw-bold mb-1">{{ $company->company_name }}</h5>
-                <p class="text-muted mb-0" style="font-size: 13px;">
+                <div class="d-flex flex-wrap gap-2" style="font-size:13px;">
                     @if($company->company_email)
-                        <i class="fas fa-envelope me-1"></i> {{ $company->company_email }}
-                    @else
-                        <span class="field-empty">No email added</span>
+                        <span class="text-muted"><i class="fas fa-envelope me-1"></i> {{ $company->company_email }}</span>
                     @endif
-                </p>
+                    @if($company->full_location)
+                        <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> {{ $company->full_location }}</span>
+                    @endif
+                    @if($company->website_url)
+                        <a href="{{ $company->website_url }}" target="_blank" class="text-primary">
+                            <i class="fas fa-globe me-1"></i> Website
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
     @endif
@@ -202,6 +226,14 @@
         @if($company) @method('PUT') @endif
 
         <div class="row g-4">
+
+            {{-- ── Section: Basic Info ── --}}
+            <div class="col-12">
+                <div class="section-divider">
+                    <p class="section-divider-title"><i class="fas fa-info-circle me-2" style="color:#6366f1;"></i> Basic Information</p>
+                </div>
+            </div>
+
             {{-- Company Name --}}
             <div class="col-md-6">
                 <label class="form-label-custom">Company Name <span class="text-danger">*</span></label>
@@ -242,22 +274,138 @@
                 @enderror
             </div>
 
-            {{-- Company Address --}}
+            {{-- Website URL --}}
             <div class="col-md-6">
+                <label class="form-label-custom">Website URL</label>
+                <div class="input-group">
+                    <span class="input-group-text" style="border-radius:10px 0 0 10px;border:1.5px solid #e2e8f0;border-right:0;">
+                        <i class="fas fa-globe" style="color:#6366f1;"></i>
+                    </span>
+                    <input type="url"
+                           name="website_url"
+                           class="form-control form-control-custom @error('website_url') is-invalid @enderror"
+                           value="{{ old('website_url', $company->website_url ?? '') }}"
+                           placeholder="https://www.company.com"
+                           style="border-radius:0 10px 10px 0;">
+                </div>
+                @error('website_url')
+                    <div class="text-danger mt-1" style="font-size:13px;">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- ── Section: Location ── --}}
+            <div class="col-12">
+                <div class="section-divider">
+                    <p class="section-divider-title"><i class="fas fa-map-marker-alt me-2" style="color:#6366f1;"></i> Location Details</p>
+                </div>
+            </div>
+
+            {{-- Company Address --}}
+            <div class="col-md-12">
                 <label class="form-label-custom">Company Address</label>
                 <textarea name="company_address"
                           class="form-control form-control-custom @error('company_address') is-invalid @enderror"
-                          rows="1"
-                          placeholder="Enter company address">{{ old('company_address', $company->company_address ?? '') }}</textarea>
+                          rows="2"
+                          placeholder="Enter full company address">{{ old('company_address', $company->company_address ?? '') }}</textarea>
                 @error('company_address')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
+            {{-- City --}}
+            <div class="col-md-4">
+                <label class="form-label-custom">City</label>
+                <input type="text"
+                       name="city"
+                       class="form-control form-control-custom @error('city') is-invalid @enderror"
+                       value="{{ old('city', $company->city ?? '') }}"
+                       placeholder="e.g., Mumbai">
+                @error('city')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Country --}}
+            <div class="col-md-4">
+                <label class="form-label-custom">Country</label>
+                <select name="country"
+                        class="form-select form-select-custom @error('country') is-invalid @enderror">
+                    <option value="">Select Country</option>
+                    @foreach($countries as $code => $name)
+                        <option value="{{ $code }}" {{ old('country', $company->country ?? '') == $code ? 'selected' : '' }}>
+                            {{ $name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('country')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Zip Code --}}
+            <div class="col-md-4">
+                <label class="form-label-custom">Zip / Postal Code</label>
+                <input type="text"
+                       name="zip_code"
+                       class="form-control form-control-custom @error('zip_code') is-invalid @enderror"
+                       value="{{ old('zip_code', $company->zip_code ?? '') }}"
+                       placeholder="e.g., 400001"
+                       maxlength="20">
+                @error('zip_code')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- ── Section: Preferences ── --}}
+            <div class="col-12">
+                <div class="section-divider">
+                    <p class="section-divider-title"><i class="fas fa-cog me-2" style="color:#6366f1;"></i> Preferences</p>
+                </div>
+            </div>
+
+            {{-- Timezone --}}
+            <div class="col-md-6">
+                <label class="form-label-custom">Timezone</label>
+                <select name="timezone"
+                        class="form-select form-select-custom @error('timezone') is-invalid @enderror">
+                    <option value="">Select Timezone</option>
+                    @foreach($timezones as $tz => $label)
+                        <option value="{{ $tz }}" {{ old('timezone', $company->timezone ?? '') == $tz ? 'selected' : '' }}>
+                            {{ $label }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('timezone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- Home Currency --}}
+            <div class="col-md-6">
+                <label class="form-label-custom">Home Currency</label>
+                <select name="home_currency"
+                        class="form-select form-select-custom @error('home_currency') is-invalid @enderror">
+                    <option value="">Select Currency</option>
+                    @foreach($currencies as $code => $label)
+                        <option value="{{ $code }}" {{ old('home_currency', $company->home_currency ?? '') == $code ? 'selected' : '' }}>
+                            {{ $label }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('home_currency')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- ── Section: Logo ── --}}
+            <div class="col-12">
+                <div class="section-divider">
+                    <p class="section-divider-title"><i class="fas fa-image me-2" style="color:#6366f1;"></i> Company Logo</p>
+                </div>
+            </div>
+
             {{-- Company Logo (Dropzone) --}}
             <div class="col-12">
-                <label class="form-label-custom">Company Logo</label>
-
                 {{-- Current Logo --}}
                 @if($company && $company->has_logo)
                     <div class="current-logo-section" id="currentLogoSection">
@@ -365,25 +513,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function handleFile(file) {
-        // Validate type
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
         if (!allowedTypes.includes(file.type)) {
             alert('Please upload JPG, JPEG, PNG, or WEBP image only.');
             return;
         }
 
-        // Validate size (2MB)
         if (file.size > 2 * 1024 * 1024) {
             alert('File size must be less than 2MB.');
             return;
         }
 
-        // Set file to input
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         fileInput.files = dataTransfer.files;
 
-        // Show preview
         const reader = new FileReader();
         reader.onload = function(e) {
             previewImg.src = e.target.result;
@@ -395,7 +539,6 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     }
 
-    // Remove preview
     if (removePreview) {
         removePreview.addEventListener('click', function() {
             fileInput.value = '';
@@ -404,7 +547,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Remove existing logo (AJAX)
     if (removeLogoBtn) {
         removeLogoBtn.addEventListener('click', function() {
             if (!confirm('Are you sure you want to remove the company logo?')) return;
@@ -423,7 +565,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (currentLogoSection) {
                         currentLogoSection.style.display = 'none';
                     }
-                    // Update header preview if exists
                     const headerLogo = document.querySelector('.company-logo-preview');
                     if (headerLogo) {
                         headerLogo.outerHTML = '<div class="company-logo-placeholder"><i class="fas fa-building"></i></div>';
