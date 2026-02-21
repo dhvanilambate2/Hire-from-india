@@ -14,7 +14,11 @@ class CompanyController extends Controller
     public function index()
     {
         $company = Auth::user()->company;
-        return view('employer.company.index', compact('company'));
+        $timezones = Company::getTimezones();
+        $currencies = Company::getCurrencies();
+        $countries = Company::getCountries();
+
+        return view('employer.company.index', compact('company', 'timezones', 'currencies', 'countries'));
     }
 
     // Store new company
@@ -26,6 +30,12 @@ class CompanyController extends Controller
             'company_email'   => 'nullable|email|max:255',
             'company_phone'   => 'nullable|string|max:20',
             'company_address' => 'nullable|string|max:500',
+            'city'            => 'nullable|string|max:100',
+            'country'         => 'nullable|string|max:5',
+            'timezone'        => 'nullable|string|max:50',
+            'home_currency'   => 'nullable|string|max:5',
+            'zip_code'        => 'nullable|string|max:20',
+            'website_url'     => 'nullable|url|max:500',
         ]);
 
         $data = [
@@ -34,6 +44,12 @@ class CompanyController extends Controller
             'company_email'   => $request->company_email,
             'company_phone'   => $request->company_phone,
             'company_address' => $request->company_address,
+            'city'            => $request->city,
+            'country'         => $request->country,
+            'timezone'        => $request->timezone,
+            'home_currency'   => $request->home_currency,
+            'zip_code'        => $request->zip_code,
+            'website_url'     => $request->website_url,
         ];
 
         // Handle logo upload
@@ -64,6 +80,12 @@ class CompanyController extends Controller
             'company_email'   => 'nullable|email|max:255',
             'company_phone'   => 'nullable|string|max:20',
             'company_address' => 'nullable|string|max:500',
+            'city'            => 'nullable|string|max:100',
+            'country'         => 'nullable|string|max:5',
+            'timezone'        => 'nullable|string|max:50',
+            'home_currency'   => 'nullable|string|max:5',
+            'zip_code'        => 'nullable|string|max:20',
+            'website_url'     => 'nullable|url|max:500',
         ]);
 
         $data = [
@@ -71,11 +93,16 @@ class CompanyController extends Controller
             'company_email'   => $request->company_email,
             'company_phone'   => $request->company_phone,
             'company_address' => $request->company_address,
+            'city'            => $request->city,
+            'country'         => $request->country,
+            'timezone'        => $request->timezone,
+            'home_currency'   => $request->home_currency,
+            'zip_code'        => $request->zip_code,
+            'website_url'     => $request->website_url,
         ];
 
         // Handle logo upload
         if ($request->hasFile('company_logo')) {
-            // Delete old logo
             if ($company->company_logo) {
                 Storage::disk('public')->delete($company->company_logo);
             }
@@ -89,7 +116,7 @@ class CompanyController extends Controller
             ->with('success', 'Company profile updated successfully!');
     }
 
-    // Remove logo (AJAX call from Dropzone)
+    // Remove logo (AJAX)
     public function removeLogo()
     {
         $company = Auth::user()->company;
@@ -111,7 +138,6 @@ class CompanyController extends Controller
 
         $company = Auth::user()->company;
 
-        // Delete old logo if exists
         if ($company && $company->company_logo) {
             Storage::disk('public')->delete($company->company_logo);
         }
