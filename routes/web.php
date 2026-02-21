@@ -13,12 +13,15 @@ use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\JobManagementController;
 use App\Http\Controllers\Freelancer\DashboardController as FreelancerDashboardController;
 use App\Http\Controllers\Freelancer\JobController as FreelancerJobController;
+use App\Http\Controllers\Freelancer\ProfileController as FreelancerProfileController;
 use App\Http\Controllers\Employer\DashboardController as EmployerDashboardController;
 use App\Http\Controllers\Employer\JobController as EmployerJobController;
 use App\Http\Controllers\Employer\CompanyController;
 
 // ── Public ──
 Route::get('/', fn() => redirect()->route('login'));
+Route::get('/freelancer/profile/{id}', [FreelancerProfileController::class, 'show'])
+    ->name('freelancer.profile.public');
 
 // ── Guest ──
 Route::middleware('guest')->group(function () {
@@ -44,6 +47,35 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
         Route::delete('/profile', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
+
+        // ── Profile Photo ──
+        Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
+        Route::delete('/profile/photo', [ProfileController::class, 'removePhoto'])->name('profile.photo.remove');
+
+        // ── Resume ──
+        Route::post('/profile/resume', [ProfileController::class, 'uploadResume'])->name('profile.resume.upload');
+        Route::delete('/profile/resume', [ProfileController::class, 'removeResume'])->name('profile.resume.remove');
+
+        // ── Skills ──
+        Route::post('/profile/skills', [ProfileController::class, 'addSkill'])->name('profile.skills.add');
+        Route::delete('/profile/skills/{skill}', [ProfileController::class, 'removeSkill'])->name('profile.skills.remove');
+
+        // ── Work Experience ──
+        Route::post('/profile/experience', [ProfileController::class, 'storeExperience'])->name('profile.experience.store');
+        Route::put('/profile/experience/{experience}', [ProfileController::class, 'updateExperience'])->name('profile.experience.update');
+        Route::delete('/profile/experience/{experience}', [ProfileController::class, 'destroyExperience'])->name('profile.experience.destroy');
+
+        // ── Education ──
+        Route::post('/profile/education', [ProfileController::class, 'storeEducation'])->name('profile.education.store');
+        Route::put('/profile/education/{education}', [ProfileController::class, 'updateEducation'])->name('profile.education.update');
+        Route::delete('/profile/education/{education}', [ProfileController::class, 'destroyEducation'])->name('profile.education.destroy');
+
+        // ── Portfolio ──
+        Route::post('/profile/portfolio', [ProfileController::class, 'storePortfolio'])->name('profile.portfolio.store');
+        Route::delete('/profile/portfolio/{portfolio}', [ProfileController::class, 'destroyPortfolio'])->name('profile.portfolio.destroy');
+
+        // ── Submit for Review ──
+        Route::post('/profile/submit-review', [ProfileController::class, 'submitForReview'])->name('profile.submit-review');
     });
 });
 
@@ -51,6 +83,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    // ── Users ──
     Route::get('/users', [UserManagementController::class, 'allUsers'])->name('users.all');
     Route::get('/users/freelancers', [UserManagementController::class, 'freelancers'])->name('users.freelancers');
     Route::get('/users/employers', [UserManagementController::class, 'employers'])->name('users.employers');
@@ -58,11 +91,17 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::patch('/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.toggle-status');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
 
+    // ── NEW: Profile Status Management ──
+    Route::patch('/users/{user}/profile-status', [UserManagementController::class, 'updateProfileStatus'])->name('users.profile-status');
+    Route::post('/users/bulk-status', [UserManagementController::class, 'bulkUpdateStatus'])->name('users.bulk-status');
+
+    // ── Admins (existing) ──
     Route::get('/admins', [AdminManagementController::class, 'index'])->name('admins.index');
     Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('admins.create');
     Route::post('/admins', [AdminManagementController::class, 'store'])->name('admins.store');
     Route::delete('/admins/{admin}', [AdminManagementController::class, 'destroy'])->name('admins.destroy');
 
+    // ── Jobs (existing) ──
     Route::get('/jobs', [JobManagementController::class, 'index'])->name('jobs.index');
     Route::get('/jobs/{job}', [JobManagementController::class, 'show'])->name('jobs.show');
     Route::post('/jobs/{job}/block', [JobManagementController::class, 'block'])->name('jobs.block');
@@ -103,4 +142,7 @@ Route::middleware(['auth', 'verified', 'role:freelancer'])->prefix('freelancer')
 
     Route::get('/my-applications', [FreelancerJobController::class, 'myApplications'])->name('applications.index');
     Route::delete('/applications/{application}/withdraw', [FreelancerJobController::class, 'withdrawApplication'])->name('applications.withdraw');
+    // ── My Public Profile & Share ──
+    Route::get('/my-profile', [FreelancerProfileController::class, 'myProfile'])->name('profile.my');
+    Route::get('/share-profile', [FreelancerProfileController::class, 'shareLink'])->name('profile.share');
 });

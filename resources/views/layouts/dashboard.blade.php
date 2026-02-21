@@ -32,6 +32,12 @@
                                 <i class="fas fa-file-alt me-1"></i> My Applications
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.profile.share') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.profile.share') }}">
+                                <i class="fas fa-share-alt"></i> Share Profile
+                            </a>
+                        </li>
                     @endif
 
                     @if(auth()->user()->isEmployer())
