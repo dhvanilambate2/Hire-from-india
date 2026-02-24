@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -49,6 +50,24 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_active'         => 'boolean',
             'hourly_rate'       => 'decimal:2',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($user) {
+
+            $slug = Str::slug($user->name);
+            $originalSlug = $slug;
+            $count = 1;
+
+            while (static::where('slug', $slug)->where('id', '!=', $user->id)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+
+            $user->slug = $slug;
+        });
     }
 
     // ── Role Checks ──

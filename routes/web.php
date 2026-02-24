@@ -23,6 +23,9 @@ Route::get('/', fn() => redirect()->route('login'));
 Route::get('/freelancer/profile/{id}', [FreelancerProfileController::class, 'show'])
     ->name('freelancer.profile.public');
 
+Route::get('/freelancer/profile/{slug}', [ProfileController::class, 'show'])
+    ->name('profile.show');
+
 // ── Guest ──
 // ── Guest ──
 Route::middleware('guest')->group(function () {
