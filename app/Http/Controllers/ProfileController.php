@@ -191,7 +191,7 @@ class ProfileController extends Controller
 
     public function removeSkill(UserSkill $skill)
     {
-        if ($skill->user_id !== Auth::id()) {
+        if ($skill->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -231,7 +231,7 @@ class ProfileController extends Controller
 
     public function updateExperience(Request $request, WorkExperience $experience)
     {
-        if ($experience->user_id !== Auth::id()) {
+        if ($experience->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -260,7 +260,7 @@ class ProfileController extends Controller
 
     public function destroyExperience(WorkExperience $experience)
     {
-        if ($experience->user_id !== Auth::id()) {
+        if ($experience->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -289,7 +289,7 @@ class ProfileController extends Controller
 
     public function updateEducation(Request $request, Education $education)
     {
-        if ($education->user_id !== Auth::id()) {
+        if ($education->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -311,7 +311,7 @@ class ProfileController extends Controller
 
     public function destroyEducation(Education $education)
     {
-        if ($education->user_id !== Auth::id()) {
+        if ($education->user_id != Auth::id()) {
             abort(403);
         }
 
@@ -337,7 +337,7 @@ class ProfileController extends Controller
 
     public function destroyPortfolio(PortfolioLink $portfolio)
     {
-        if ($portfolio->user_id !== Auth::id()) {
+        if ($portfolio->user_id != Auth::id()) {
             abort(403);
         }
 

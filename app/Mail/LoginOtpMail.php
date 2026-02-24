@@ -11,28 +11,24 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class LoginOtpMail extends Mailable implements ShouldQueue
+class LoginOtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(
-        public User $user,
-        public string $otp,
-    ) {
-        // dd($user->email, $otp); // Debugging line - remove in production
+    public $user;
+    public $otp;
+
+    public function __construct($user, $otp) {
+        $this->user = $user;
+        $this->otp = $otp;
+        // dd($this->user, $this->otp);
     }
 
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Your Login OTP - HireFormIndia',
-        );
-    }
-
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.login-otp',
-        );
+        return $this->subject('Your Login OTP - HireFormIndia')
+            ->view('emails.login-otp')
+            ->with('user', $this->user)
+            ->with('otp', $this->otp);
     }
 }
