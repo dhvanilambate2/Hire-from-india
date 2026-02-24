@@ -24,6 +24,7 @@ Route::get('/freelancer/profile/{id}', [FreelancerProfileController::class, 'sho
     ->name('freelancer.profile.public');
 
 // ── Guest ──
+// ── Guest ──
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
@@ -33,6 +34,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showForm'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+    // ── OTP Routes ──
+    Route::get('/otp/verify', [LoginController::class, 'showOtpForm'])->name('otp.verify.form');
+    Route::post('/otp/verify', [LoginController::class, 'verifyOtp'])->name('otp.verify');
+    Route::post('/otp/resend', [LoginController::class, 'resendOtp'])->name('otp.resend');
+    Route::get('/otp/cancel', [LoginController::class, 'cancelOtp'])->name('otp.cancel');
 });
 
 // ── Auth ──

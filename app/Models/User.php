@@ -251,4 +251,9 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($percentage >= 50) return '#d97706';
         return '#dc2626';
     }
+
+    public function loginOtps()
+    {
+        return $this->hasMany(LoginOtp::class);
+    }
 }
