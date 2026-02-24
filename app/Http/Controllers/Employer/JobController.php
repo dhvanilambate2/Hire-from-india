@@ -68,7 +68,7 @@ class JobController extends Controller
     // Show single job with applications
     public function show(JobPost $job)
     {
-        if ($job->employer_id !== Auth::id()) {
+        if ($job->employer_id != Auth::id()) {
             abort(403);
         }
 
@@ -80,7 +80,7 @@ class JobController extends Controller
     // Show edit form
     public function edit(JobPost $job)
     {
-        if ($job->employer_id !== Auth::id()) {
+        if ($job->employer_id != Auth::id()) {
             abort(403);
         }
 
@@ -94,7 +94,7 @@ class JobController extends Controller
     // Update job
     public function update(Request $request, JobPost $job)
     {
-        if ($job->employer_id !== Auth::id()) {
+        if ($job->employer_id != Auth::id()) {
             abort(403);
         }
 
@@ -129,7 +129,7 @@ class JobController extends Controller
     // Close / Reopen
     public function toggleStatus(JobPost $job)
     {
-        if ($job->employer_id !== Auth::id()) {
+        if ($job->employer_id != Auth::id()) {
             abort(403);
         }
 
@@ -149,7 +149,7 @@ class JobController extends Controller
     // Delete
     public function destroy(JobPost $job)
     {
-        if ($job->employer_id !== Auth::id()) {
+        if ($job->employer_id != Auth::id()) {
             abort(403);
         }
 
@@ -162,7 +162,7 @@ class JobController extends Controller
     // Accept / Reject application
     public function updateApplication(Request $request, JobApplication $application)
     {
-        if ($application->jobPost->employer_id !== Auth::id()) {
+        if ($application->jobPost->employer_id != Auth::id()) {
             abort(403);
         }
 

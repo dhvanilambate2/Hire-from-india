@@ -96,7 +96,7 @@ class JobController extends Controller
     // Withdraw
     public function withdrawApplication(JobApplication $application)
     {
-        if ($application->freelancer_id !== Auth::id()) {
+        if ($application->freelancer_id != Auth::id()) {
             abort(403);
         }
 
