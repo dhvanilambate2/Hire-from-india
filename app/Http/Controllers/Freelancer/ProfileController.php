@@ -10,27 +10,21 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
     // Public profile view (anyone can see)
-    // public function show($id)
-    // {
-    //     $freelancer = User::where('id', $id)
-    //         ->where('role', 'freelancer')
-    //         ->where('is_active', true)
-    //         ->with([
-    //             'skills',
-    //             'workExperiences',
-    //             'educations',
-    //             'portfolioLinks',
-    //         ])
-    //         ->firstOrFail();
+    public function show($slug)
+    {
+        $freelancer = User::where('slug', $slug)
+            ->where('role', 'freelancer')
+            ->where('is_active', true)
+            ->with([
+                'skills',
+                'workExperiences',
+                'educations',
+                'portfolioLinks',
+            ])
+            ->firstOrFail();
 
-    //     return view('freelancer.profile.show', compact('freelancer'));
-    // }
-
-     public function show($slug)
-        {
-            $freelancer = User::where('slug', $slug)->firstOrFail();
-            return view('freelancer.profile.show', compact('freelancer'));
-        }
+        return view('freelancer.profile.show', compact('freelancer'));
+    }
 
     // Get shareable link (for logged-in freelancer)
     public function myProfile()

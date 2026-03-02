@@ -29,7 +29,6 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="profileUrl" value="{{ $profileUrl }}" readonly
                                    style="background:#f8fafc;font-size:14px;">
-                                   {{-- {{ dd($profileUrl); }} --}}
                             <button class="btn btn-primary" onclick="copyLink()" id="copyBtn">
                                 <i class="fas fa-copy me-1"></i> Copy
                             </button>
