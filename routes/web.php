@@ -19,7 +19,9 @@ use App\Http\Controllers\Employer\JobController as EmployerJobController;
 use App\Http\Controllers\Employer\CompanyController;
 
 // ── Public ──
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::get('/freelancer/profile/{id}', [FreelancerProfileController::class, 'show'])
     ->name('freelancer.profile.public');
 
