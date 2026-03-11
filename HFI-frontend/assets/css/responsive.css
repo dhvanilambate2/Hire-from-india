@@ -1,0 +1,419 @@
+@media (min-width: 1300px) {
+	.container {
+		max-width: 1140px !important;
+	}
+
+	section {
+		padding: 75px 220px 80px 220px;
+	}
+
+	.hero-content {
+		width: 584px;
+		margin: 0px auto 60px;
+	}
+}
+
+@media (min-width: 992px) {
+	.nav-item-br {
+		border-right: 1px solid #eee !important;
+	}
+
+	.skills-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 1399px) {
+	.nav-item {
+		padding-right: 5px;
+	}
+}
+
+@media (max-width: 991px) {
+	.navbar-toggler {
+		border: none !important;
+	}
+
+	.navbar-toggler:focus {
+		box-shadow: none !important;
+	}
+
+	.offcanvas-header {
+		border-bottom: 1px solid #eee;
+	}
+
+	.offcanvas {
+		padding: 0px 15px;
+		height: 100vh;
+	}
+
+	.offcanvas-header .btn-close {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ff0000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+		opacity: 1;
+	}
+
+	.btn-close:focus {
+		box-shadow: none !important;
+	}
+
+	.navbar-toggler-icon {
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%230b5ea8' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
+	}
+
+	.oj-btn-primary,
+    .oj-btn-success {
+		background-color: transparent !important;
+		color: var(--primary) !important;
+		padding: 8px 0px !important;
+	}
+
+	.hero .search-container {
+		grid-template-columns: 1fr;
+		gap: 30px;
+		max-width: 100%;
+	}
+
+	.hero .input-wrapper {
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.hero input[type="text"] {
+		min-width: 0;
+		width: 100%;
+	}
+
+	.employers-say-container {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: thin;
+	}
+
+	.employers-say-row {
+		flex-wrap: nowrap;
+		min-width: max-content;
+	}
+
+	.testimonial-card {
+		flex: 0 0 calc(50% - 1rem);
+	}
+
+	.split-hero {
+		flex-direction: column;
+		min-height: auto;
+	}
+
+	.panel-left {
+		clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+		min-height: 420px;
+		padding: 2.5rem 2rem 6rem;
+	}
+
+	.panel-right {
+		margin-left: 0;
+		padding: 4rem 1.5rem 5rem !important;
+		margin-top: -50px;
+		min-height: 445px;
+	}
+
+	.panel-left .panel-content h2,
+      .panel-right .panel-content h2 {
+		font-size: 1.8rem;
+	}
+
+	.panel-image {
+		height: 55% !important;
+	}
+
+	.bubble-left-2, .bubble-right-2 {
+		display: none;
+	}
+
+	.footer-logo {
+		justify-content: center;
+	}
+}
+
+@media (max-width: 769px) {
+	.skills-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 15px 30px;
+	}
+
+	.step-heading {
+		font-size: 1.25rem;
+	}
+
+	.illustration-wrap {
+		min-height: 200px;
+		margin-bottom: 2rem;
+	}
+
+	.money-back {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.testimonial-card {
+		flex: 0 0 calc(100% - 1rem);
+	}
+
+	.logos-row {
+		flex-wrap: wrap;
+		gap: 1.5rem 2rem;
+	}
+
+	.image-col {
+		min-height: 260px;
+	}
+	/* On mobile, fade from bottom */
+	.image-col::before {
+		width: 100%;
+		height: 40%;
+		background: linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0) 100%);
+		top: 0;
+		left: 0;
+	}
+
+	.real-results-body .text-col {
+		padding: 2.5rem 1.5rem;
+	}
+
+	.real-results-body p {
+		max-width: 100%;
+	}
+
+	.story-row {
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.story-photo {
+		flex: none;
+		max-width: 100%;
+		width: 100%;
+		max-height: 320px;
+	}
+
+	.story-photo img {
+		max-height: 320px;
+	}
+
+	.login-card,
+      .register-box {
+		width: 100%;
+		padding: 1.2rem 1.4rem;
+	}
+
+	.review-row,
+      .review-row.reverse,
+      .video-row {
+		flex-direction: column;
+		text-align: center !important;
+	}
+
+	.review-row.reverse .review-text {
+		text-align: center;
+	}
+
+	.review-avatar {
+		width: 110px;
+		height: 110px;
+		flex: none;
+	}
+
+	.video-embed {
+		width: 100%;
+		flex: none;
+	}
+
+	.video-row {
+		padding: 1.5rem;
+	}
+
+	.contact-hero h1 {
+		font-size: 1.7rem;
+	}
+
+	.captcha-box {
+		flex-wrap: wrap;
+	}
+
+	.btn-faq, .btn-messenger {
+		max-width: 100%;
+	}
+
+	.privacy-layout {
+		flex-direction: column;
+		padding: 2rem 1rem 3rem;
+	}
+
+	.toc {
+		width: 100%;
+		position: static;
+	}
+
+	.privacy-hero h1 {
+		font-size: 1.7rem;
+	}
+
+	.sidebar {
+		position: static;
+		width: 100%;
+		top: unset;
+		align-self: auto;
+	}
+
+	.jobs-layout {
+		flex-direction: column;
+	}
+
+	.sidebar {
+		width: 100%;
+	}
+
+	.job-card-inner {
+		flex-direction: column;
+	}
+
+	.company-logo {
+		width: 48px;
+		height: 48px;
+	}
+
+	.page-layout {
+		flex-direction: column;
+		padding: 2rem 1rem 3rem;
+	}
+
+	.toc {
+		width: 100%;
+		position: static;
+	}
+
+	.page-hero h1 {
+		font-size: 1.7rem;
+	}
+
+	.footer {
+		padding: 30px 0 20px;
+	}
+
+	.footer-column {
+		margin-bottom: 30px;
+	}
+
+	.footer-column:last-child {
+		margin-bottom: 0;
+	}
+
+	.footer-bottom {
+		text-align: center;
+	}
+
+	.footer-logo {
+		justify-content: center;
+		margin-bottom: 15px;
+	}
+
+	.copyright {
+		margin-bottom: 0;
+	}
+
+	.step-row, .step-row.reverse {
+		flex-direction: column;
+	}
+
+	.step-image {
+		flex: none;
+		width: 100%;
+		text-align: center;
+	}
+
+	.step-image img {
+		max-width: 180px;
+	}
+}
+
+@media (max-width: 576px) {
+	.skills-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.pages-menu-list {
+		gap: 15px;
+	}
+
+	.logo-item img {
+		height: 36px;
+	}
+
+	.logos-row {
+		gap: 1.5rem 1.8rem;
+	}
+
+	.logo-item img {
+		height: 36px;
+	}
+
+	.logos-row {
+		gap: 1.5rem 1.8rem;
+	}
+
+	.panel {
+		padding: 2rem 1.5rem 5rem;
+	}
+
+	.panel-left .panel-content h2,
+	.panel-right .panel-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.bubble {
+		font-size: 0.7rem;
+		padding: 0.45rem 0.8rem;
+		max-width: 130px;
+	}
+
+	.drawer {
+		width: 100vw;
+		padding: 1.5rem 1.4rem 2.5rem;
+	}
+
+	.about-hero h1 {
+		font-size: 1.4rem;
+	}
+
+	.team-grid-item {
+		width: 100px;
+	}
+
+	.team-grid-item img {
+		width: 80px;
+		height: 80px;
+	}
+
+	.ref-hero h1 {
+		font-size: 1.5rem;
+	}
+
+	.steps-row {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.step-item {
+		width: 100%;
+		max-width: 260px;
+	}
+}
+
+@media (max-width: 450px) {
+	#mainHeader {
+		padding: 20px 0px;
+	}
+
+	.offcanvas {
+		width: 100% !important;
+	}
+}
