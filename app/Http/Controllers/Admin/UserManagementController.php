@@ -11,7 +11,7 @@ class UserManagementController extends Controller
     // Show all freelancers
     public function freelancers(Request $request)
     {
-        $query = User::freelancers();
+        $query = User::freelancers()->withCount(['skills', 'workExperiences', 'educations']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -19,6 +19,10 @@ class UserManagementController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+
+        if ($request->filled('profile_status')) {
+            $query->where('profile_status', $request->profile_status);
         }
 
         $freelancers = $query->latest()->paginate(10);
@@ -29,7 +33,7 @@ class UserManagementController extends Controller
     // Show all employers
     public function employers(Request $request)
     {
-        $query = User::employers();
+        $query = User::employers()->with('company')->withCount(['jobPosts']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -37,6 +41,10 @@ class UserManagementController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+
+        if ($request->filled('profile_status')) {
+            $query->where('profile_status', $request->profile_status);
         }
 
         $employers = $query->latest()->paginate(10);
@@ -47,7 +55,9 @@ class UserManagementController extends Controller
     // Show all users (both freelancers & employers)
     public function allUsers(Request $request)
     {
-        $query = User::whereIn('role', ['freelancer', 'employer']);
+        $query = User::whereIn('role', ['freelancer', 'employer'])
+            ->with('company')
+            ->withCount(['skills', 'workExperiences', 'educations']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -69,6 +79,10 @@ class UserManagementController extends Controller
             }
         }
 
+        if ($request->filled('profile_status')) {
+            $query->where('profile_status', $request->profile_status);
+        }
+
         $users = $query->latest()->paginate(10);
 
         return view('admin.users.all', compact('users'));
@@ -77,6 +91,20 @@ class UserManagementController extends Controller
     // View single user
     public function show(User $user)
     {
+        $user->load([
+            'skills',
+            'workExperiences',
+            'educations',
+            'portfolioLinks',
+            'company',
+            'jobPosts' => function ($q) {
+                $q->latest()->limit(5);
+            },
+            'jobApplications' => function ($q) {
+                $q->with('jobPost')->latest()->limit(5);
+            },
+        ]);
+
         return view('admin.users.show', compact('user'));
     }
 
@@ -88,6 +116,40 @@ class UserManagementController extends Controller
         $status = $user->is_active ? 'activated' : 'deactivated';
 
         return back()->with('success', "User {$user->name} has been {$status}.");
+    }
+
+    // ── NEW: Update Profile Status ──
+    public function updateProfileStatus(Request $request, User $user)
+    {
+        $request->validate([
+            'profile_status' => 'required|in:draft,under_review,verified,rejected,suspended',
+            'status_reason'  => 'nullable|string|max:500',
+        ]);
+
+        $user->update([
+            'profile_status' => $request->profile_status,
+        ]);
+
+        $statusLabel = $user->profile_status_label;
+
+        return back()->with('success', "Profile status changed to '{$statusLabel}' for {$user->name}.");
+    }
+
+    // ── NEW: Bulk Update Profile Status ──
+    public function bulkUpdateStatus(Request $request)
+    {
+        $request->validate([
+            'user_ids'       => 'required|array',
+            'user_ids.*'     => 'exists:users,id',
+            'profile_status' => 'required|in:draft,under_review,verified,rejected,suspended',
+        ]);
+
+        User::whereIn('id', $request->user_ids)
+            ->update(['profile_status' => $request->profile_status]);
+
+        $count = count($request->user_ids);
+
+        return back()->with('success', "Profile status updated for {$count} users.");
     }
 
     // Delete user

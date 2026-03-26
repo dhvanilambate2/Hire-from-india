@@ -6,7 +6,7 @@
         <div class="container">
             <a class="navbar-brand fw-bold" href="#">
                 <i class="fas fa-bolt" style="color:#4f46e5;"></i>
-                Freelancer Platform
+                Hire Form India
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -16,25 +16,52 @@
                     @if(auth()->user()->isFreelancer())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('freelancer.dashboard') ? 'active fw-bold' : '' }}"
-                               href="{{ route('freelancer.dashboard') }}">
+                            href="{{ route('freelancer.dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.jobs.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.jobs.index') }}">
+                                <i class="fas fa-search me-1"></i> Browse Jobs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.applications.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.applications.index') }}">
+                                <i class="fas fa-file-alt me-1"></i> My Applications
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('freelancer.profile.share') ? 'active fw-bold' : '' }}"
+                            href="{{ route('freelancer.profile.share') }}">
+                                <i class="fas fa-share-alt"></i> Share Profile
+                            </a>
+                        </li>
                     @endif
+
                     @if(auth()->user()->isEmployer())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('employer.dashboard') ? 'active fw-bold' : '' }}"
-                               href="{{ route('employer.dashboard') }}">
+                                href="{{ route('employer.dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                             </a>
                         </li>
-                    @endif
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active fw-bold' : '' }}"
-                           href="{{ route('profile.edit') }}">
-                            <i class="fas fa-user-edit me-1"></i> Edit Profile
+                        <li class="nav-item">
+                            <a href="{{ route('employer.company.index') }}" class="nav-link {{ request()->routeIs('employer.company.*') ? 'active' : '' }}">
+                            <i class="fas fa-building"></i> Company Profile
+                            @if(!auth()->user()->hasCompany())
+                                <span class="badge bg-warning ms-auto" style="font-size: 10px;">Setup</span>
+                            @endif
                         </a>
-                    </li>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('employer.jobs.*') ? 'active fw-bold' : '' }}"
+                            href="{{ route('employer.jobs.index') }}">
+                                <i class="fas fa-briefcase me-1"></i> My Jobs
+                            </a>
+                        </li>
+                    @endif
                 </ul>
 
                 <div class="dropdown">

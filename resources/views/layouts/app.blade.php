@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Freelancer Platform')</title>
+    <title>@yield('title', 'Hire Form India')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -278,6 +278,75 @@
             .sidebar { transform: translateX(-100%); }
             .sidebar.show { transform: translateX(0); }
             .main-content { margin-left: 0; }
+        }
+        /* ---- JOB CARDS ---- */
+        .job-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s;
+            height: 100%;
+        }
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        .job-card .job-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .job-card .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .job-card .job-meta span {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .job-card .job-meta i {
+            margin-right: 4px;
+            width: 14px;
+        }
+        .job-salary {
+            font-size: 16px;
+            font-weight: 700;
+            color: #16a34a;
+        }
+
+        .badge-work-type {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-full_time   { background: #dbeafe; color: #1d4ed8; }
+        .badge-part_time   { background: #fef3c7; color: #b45309; }
+        .badge-contract    { background: #ede9fe; color: #7c3aed; }
+        .badge-freelance   { background: #dcfce7; color: #16a34a; }
+        .badge-internship  { background: #fce7f3; color: #be185d; }
+        .badge-temporary   { background: #ffedd5; color: #c2410c; }
+
+        .badge-app-pending  { background: #fef3c7; color: #b45309; }
+        .badge-app-accepted { background: #dcfce7; color: #16a34a; }
+        .badge-app-rejected { background: #fee2e2; color: #dc2626; }
+
+        /* CKEditor fix */
+        .ck-editor__editable {
+            min-height: 200px !important;
+        }
+        .job-overview-content img {
+            max-width: 100%;
+            height: auto;
+        }
+        .job-overview-content {
+            line-height: 1.8;
+            color: #475569;
         }
     </style>
     @stack('styles')
